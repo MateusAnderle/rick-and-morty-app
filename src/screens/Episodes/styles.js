@@ -52,48 +52,8 @@ export const Search = styled.View`
 `;
 
 
-export const CharacterList = styled(FlatList).attrs({
+export const EpisodesList = styled(FlatList).attrs({
     showsVerticalScrollIndicator: false
 })`
     width: 100%;
-`;
-
-export const Modal = styled.Modal``;
-
-export const CenteredView = styled.View`
-    flex: 1;
-    justify-content: center;
-    align-items: center;
-    margin-top: 2px;
-    background-color: rgba(0, 0, 0, 0.7);
-`;
-
-export const ModalView = styled.View`
-    width: 80%;
-    background-color: #fff;
-    border-radius: 20px;
-    padding: 25px;
-    align-items: center;
-`;
-
-export const ModalAvatar = styled.Image`
-    width: 120px;
-    height: 120px;
-    border-radius: 10px;
-    margin-bottom: 10px;
-`;
-
-export const ModalText = styled.Text`
-    margin-bottom: 10px;
-    text-align: center;
-`;
-
-export const Pressable = styled.TouchableOpacity`
-    border-radius: 10px;
-    padding: 10px;
-    background-color: #98FB98;
-`;
-
-export const ButtonText = styled.Text`
-    font-weight: bold;
 `;

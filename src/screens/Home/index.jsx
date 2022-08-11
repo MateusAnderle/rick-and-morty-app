@@ -1,21 +1,38 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import * as S from './styles';
-import { FlatList, StatusBar, ImageBackground, StyleSheet, Alert } from 'react-native';
+import { StatusBar, ImageBackground, StyleSheet, Alert, Text } from 'react-native';
 import { Feather } from '@expo/vector-icons'; 
 import { AvatarCard } from '../../components/AvatarCard';
+import { api } from '../../services/api';
+import { LoadAnimation } from '../../components/LoadAnimation';
 
 
 export function Home() {
+  const [loading, setLoading] = useState(true);
+  const [characters, setCharacters] = useState({});
+  const [modalVisible, setModalVisible] = useState(false);
+  const [charactersModal, setCharactersModal] = useState({});
+  const B = (props) => <Text style={{fontWeight: 'bold'}}>{props.children}</Text>;
 
-  function alertToday(){
-    Alert.alert('alou');
+  function handleModalOpen(item){
+    setModalVisible(true);
+    setCharactersModal(item);
   }
 
-  const data = {"id":1,"name":"Rick Sanchez","status":"Alive","species":"Human","type":"","gender":"Male","origin":{"name":"Earth (C-137)","url":"https://rickandmortyapi.com/api/location/1"},"location":{"name":"Citadel of Ricks","url":"https://rickandmortyapi.com/api/location/3"},"image":"https://rickandmortyapi.com/api/character/avatar/1.jpeg","episode":["https://rickandmortyapi.com/api/episode/1","https://rickandmortyapi.com/api/episode/2","https://rickandmortyapi.com/api/episode/3","https://rickandmortyapi.com/api/episode/4","https://rickandmortyapi.com/api/episode/5","https://rickandmortyapi.com/api/episode/6","https://rickandmortyapi.com/api/episode/7","https://rickandmortyapi.com/api/episode/8","https://rickandmortyapi.com/api/episode/9","https://rickandmortyapi.com/api/episode/10","https://rickandmortyapi.com/api/episode/11","https://rickandmortyapi.com/api/episode/12","https://rickandmortyapi.com/api/episode/13","https://rickandmortyapi.com/api/episode/14","https://rickandmortyapi.com/api/episode/15","https://rickandmortyapi.com/api/episode/16","https://rickandmortyapi.com/api/episode/17","https://rickandmortyapi.com/api/episode/18","https://rickandmortyapi.com/api/episode/19","https://rickandmortyapi.com/api/episode/20","https://rickandmortyapi.com/api/episode/21","https://rickandmortyapi.com/api/episode/22","https://rickandmortyapi.com/api/episode/23","https://rickandmortyapi.com/api/episode/24","https://rickandmortyapi.com/api/episode/25","https://rickandmortyapi.com/api/episode/26","https://rickandmortyapi.com/api/episode/27","https://rickandmortyapi.com/api/episode/28","https://rickandmortyapi.com/api/episode/29","https://rickandmortyapi.com/api/episode/30","https://rickandmortyapi.com/api/episode/31","https://rickandmortyapi.com/api/episode/32","https://rickandmortyapi.com/api/episode/33","https://rickandmortyapi.com/api/episode/34","https://rickandmortyapi.com/api/episode/35","https://rickandmortyapi.com/api/episode/36","https://rickandmortyapi.com/api/episode/37","https://rickandmortyapi.com/api/episode/38","https://rickandmortyapi.com/api/episode/39","https://rickandmortyapi.com/api/episode/40","https://rickandmortyapi.com/api/episode/41","https://rickandmortyapi.com/api/episode/42","https://rickandmortyapi.com/api/episode/43","https://rickandmortyapi.com/api/episode/44","https://rickandmortyapi.com/api/episode/45","https://rickandmortyapi.com/api/episode/46","https://rickandmortyapi.com/api/episode/47","https://rickandmortyapi.com/api/episode/48","https://rickandmortyapi.com/api/episode/49","https://rickandmortyapi.com/api/episode/50","https://rickandmortyapi.com/api/episode/51"],"url":"https://rickandmortyapi.com/api/character/1","created":"2017-11-04T18:48:46.250Z"};
+  useEffect(()=>{
+    async function fetchCharacter(){
+      try {
+        const response = await api.get('/character');
+        setCharacters(response.data);
 
-  const data2 = {"id":2,"name":"Morty Smith","status":"Alive","species":"Human","type":"","gender":"Male","origin":{"name":"unknown","url":""},"location":{"name":"Citadel of Ricks","url":"https://rickandmortyapi.com/api/location/3"},"image":"https://rickandmortyapi.com/api/character/avatar/2.jpeg","episode":["https://rickandmortyapi.com/api/episode/1","https://rickandmortyapi.com/api/episode/2","https://rickandmortyapi.com/api/episode/3","https://rickandmortyapi.com/api/episode/4","https://rickandmortyapi.com/api/episode/5","https://rickandmortyapi.com/api/episode/6","https://rickandmortyapi.com/api/episode/7","https://rickandmortyapi.com/api/episode/8","https://rickandmortyapi.com/api/episode/9","https://rickandmortyapi.com/api/episode/10","https://rickandmortyapi.com/api/episode/11","https://rickandmortyapi.com/api/episode/12","https://rickandmortyapi.com/api/episode/13","https://rickandmortyapi.com/api/episode/14","https://rickandmortyapi.com/api/episode/15","https://rickandmortyapi.com/api/episode/16","https://rickandmortyapi.com/api/episode/17","https://rickandmortyapi.com/api/episode/18","https://rickandmortyapi.com/api/episode/19","https://rickandmortyapi.com/api/episode/20","https://rickandmortyapi.com/api/episode/21","https://rickandmortyapi.com/api/episode/22","https://rickandmortyapi.com/api/episode/23","https://rickandmortyapi.com/api/episode/24","https://rickandmortyapi.com/api/episode/25","https://rickandmortyapi.com/api/episode/26","https://rickandmortyapi.com/api/episode/27","https://rickandmortyapi.com/api/episode/28","https://rickandmortyapi.com/api/episode/29","https://rickandmortyapi.com/api/episode/30","https://rickandmortyapi.com/api/episode/31","https://rickandmortyapi.com/api/episode/32","https://rickandmortyapi.com/api/episode/33","https://rickandmortyapi.com/api/episode/34","https://rickandmortyapi.com/api/episode/35","https://rickandmortyapi.com/api/episode/36","https://rickandmortyapi.com/api/episode/37","https://rickandmortyapi.com/api/episode/38","https://rickandmortyapi.com/api/episode/39","https://rickandmortyapi.com/api/episode/40","https://rickandmortyapi.com/api/episode/41","https://rickandmortyapi.com/api/episode/42","https://rickandmortyapi.com/api/episode/43","https://rickandmortyapi.com/api/episode/44","https://rickandmortyapi.com/api/episode/45","https://rickandmortyapi.com/api/episode/46","https://rickandmortyapi.com/api/episode/47","https://rickandmortyapi.com/api/episode/48","https://rickandmortyapi.com/api/episode/49","https://rickandmortyapi.com/api/episode/50","https://rickandmortyapi.com/api/episode/51"],"url":"https://rickandmortyapi.com/api/character/2","created":"2017-11-04T18:50:21.651Z"};
-
-  const data3 = {"id":3,"name":"Summer Smith","status":"Alive","species":"Human","type":"","gender":"Female","origin":{"name":"Earth (Replacement Dimension)","url":"https://rickandmortyapi.com/api/location/20"},"location":{"name":"Earth (Replacement Dimension)","url":"https://rickandmortyapi.com/api/location/20"},"image":"https://rickandmortyapi.com/api/character/avatar/3.jpeg","episode":["https://rickandmortyapi.com/api/episode/6","https://rickandmortyapi.com/api/episode/7","https://rickandmortyapi.com/api/episode/8","https://rickandmortyapi.com/api/episode/9","https://rickandmortyapi.com/api/episode/10","https://rickandmortyapi.com/api/episode/11","https://rickandmortyapi.com/api/episode/12","https://rickandmortyapi.com/api/episode/14","https://rickandmortyapi.com/api/episode/15","https://rickandmortyapi.com/api/episode/16","https://rickandmortyapi.com/api/episode/17","https://rickandmortyapi.com/api/episode/18","https://rickandmortyapi.com/api/episode/19","https://rickandmortyapi.com/api/episode/20","https://rickandmortyapi.com/api/episode/21","https://rickandmortyapi.com/api/episode/22","https://rickandmortyapi.com/api/episode/23","https://rickandmortyapi.com/api/episode/24","https://rickandmortyapi.com/api/episode/25","https://rickandmortyapi.com/api/episode/26","https://rickandmortyapi.com/api/episode/27","https://rickandmortyapi.com/api/episode/29","https://rickandmortyapi.com/api/episode/30","https://rickandmortyapi.com/api/episode/31","https://rickandmortyapi.com/api/episode/32","https://rickandmortyapi.com/api/episode/33","https://rickandmortyapi.com/api/episode/34","https://rickandmortyapi.com/api/episode/35","https://rickandmortyapi.com/api/episode/36","https://rickandmortyapi.com/api/episode/38","https://rickandmortyapi.com/api/episode/39","https://rickandmortyapi.com/api/episode/40","https://rickandmortyapi.com/api/episode/41","https://rickandmortyapi.com/api/episode/42","https://rickandmortyapi.com/api/episode/43","https://rickandmortyapi.com/api/episode/44","https://rickandmortyapi.com/api/episode/45","https://rickandmortyapi.com/api/episode/46","https://rickandmortyapi.com/api/episode/47","https://rickandmortyapi.com/api/episode/48","https://rickandmortyapi.com/api/episode/49","https://rickandmortyapi.com/api/episode/51"],"url":"https://rickandmortyapi.com/api/character/3","created":"2017-11-04T19:09:56.428Z"};
+      } catch (error) {
+        console.log(error);
+      }finally{
+        setLoading(false);
+      }
+    }
+    fetchCharacter();
+  }, []);
   
     return (
       <S.Container>
@@ -27,31 +44,69 @@ export function Home() {
             backgroundColor='transparent'
         />
 
-        <S.BlackTable>
-            <S.Header>
-              <S.BigTitle>Rick and Morty</S.BigTitle>
-              <S.SubTitle>Learn more about pop culture</S.SubTitle>
-            </S.Header>
+          <S.BlackTable>
+              <S.Header>
+                <S.BigTitle>Rick and Morty</S.BigTitle>
+                <S.SubTitle>Learn more about pop culture</S.SubTitle>
+              </S.Header>
 
-            <S.Search>
-              <S.IconButton>
-                <Feather name="search" size={24} color="white" />
-              </S.IconButton>
-            </S.Search>
-        </S.BlackTable>
-
-
-        <S.WhiteTable>
-          <AvatarCard onPress={alertToday} image={data.image} name={data.name} status={data.status} species={data.species}/>
-
-          <AvatarCard onPress={alertToday} image={data2.image} name={data2.name} status={data2.status} species={data2.species}/>
-
-          <AvatarCard onPress={alertToday} image={data3.image} name={data3.name} status={data3.status} species={data3.species}/>
-
-          {/*<FlatList />*/}
-        </S.WhiteTable>
+              <S.Search>
+                <S.IconButton>
+                  <Feather name="search" size={24} color="white" />
+                </S.IconButton>
+              </S.Search>
+          </S.BlackTable>
 
 
+          <S.WhiteTable>
+
+
+              <S.Modal
+                animationType="fade"
+                transparent={true}
+                visible={modalVisible}
+                onRequestClose={() => {
+                  Alert.alert("Modal has been closed.");
+                  setModalVisible(!modalVisible);
+                }}
+              >
+                  <S.CenteredView>
+                    <S.ModalView>
+
+                      <S.ModalAvatar source={{uri: charactersModal.image}}/>
+                      
+                      <S.ModalText><B>ID:</B> {charactersModal.id}</S.ModalText>
+                      <S.ModalText><B>Name:</B> {charactersModal.name}</S.ModalText>
+                      <S.ModalText><B>Gender:</B> {charactersModal.gender}</S.ModalText>
+                      <S.ModalText><B>Species:</B> {charactersModal.species}</S.ModalText>
+                      <S.ModalText><B>Type:</B> {charactersModal.type ? charactersModal.type : 'unknown' }</S.ModalText>
+                      <S.ModalText><B>Status:</B> {charactersModal.status}</S.ModalText>
+
+                      <S.Pressable onPress={() => setModalVisible(!modalVisible)}>
+                        <S.ButtonText>Close details</S.ButtonText>
+                      </S.Pressable>
+                    </S.ModalView>
+                </S.CenteredView>
+              </S.Modal>
+
+
+          { loading ? <LoadAnimation /> : 
+              <S.CharacterList 
+                data={characters.results}
+                keyExtractor={item => item.id}
+                renderItem={({item}) => 
+                  <AvatarCard 
+                    onPress={() => handleModalOpen(item)}
+                    image={item.image} 
+                    name={item.name} 
+                    status={item.status} 
+                    species={item.species} 
+                  />
+                }
+              />
+          }
+
+          </S.WhiteTable>
         </ImageBackground>
       </S.Container>
     );
@@ -65,5 +120,5 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     opacity: 1,
-  }
-})
+  },
+});

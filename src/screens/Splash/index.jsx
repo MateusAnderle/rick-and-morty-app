@@ -1,8 +1,17 @@
 import React from 'react';
 import * as S from './styles';
-import { StatusBar, ImageBackground, StyleSheet, ActivityIndicator } from 'react-native';
+import { StatusBar, ImageBackground, StyleSheet, ActivityIndicator, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 export function Splash() {
+  const navigation = useNavigation();
+
+  setTimeout(
+    function startApp(){
+      navigation.navigate('Home')
+    }, 2000
+  )
+ 
     return (
       <S.Container>
         <ImageBackground source={require('../../assets/splash.jpg')} style={styles.imageBackground}>
@@ -31,3 +40,5 @@ const styles = StyleSheet.create({
     opacity: 1,
   }
 })
+
+//<TouchableOpacity onPress={startApp} style={{width: 50, height: 50, backgroundColor: 'FFF'}}></TouchableOpacity>
