@@ -9,9 +9,9 @@ import { LoadAnimation } from '../../components/LoadAnimation';
 
 export function Home() {
   const [loading, setLoading] = useState(true);
-  const [characters, setCharacters] = useState({});
   const [modalVisible, setModalVisible] = useState(false);
   const [charactersModal, setCharactersModal] = useState({});
+  const [bigData, setBigData] = useState([]); 
   const B = (props) => <Text style={{fontWeight: 'bold'}}>{props.children}</Text>;
 
   function handleModalOpen(item){
@@ -22,9 +22,12 @@ export function Home() {
   useEffect(()=>{
     async function fetchCharacter(){
       try {
-        const response = await api.get('/character');
-        setCharacters(response.data);
-
+/////////////////////////////////////////////////////////////////////////// FAZER NAS OUTRAS PÁGINAS
+        for (let i = 1; i <= 826; i++) {
+          let responseNova = await api.get('/character/' + i);
+          setBigData(arr => [...arr, responseNova.data]);
+       }
+/////////////////////////////////////////////////////////////////////////// FAZER NAS OUTRAS PÁGINAS
       } catch (error) {
         console.log(error);
       }finally{
@@ -92,7 +95,7 @@ export function Home() {
 
           { loading ? <LoadAnimation /> : 
               <S.CharacterList 
-                data={characters.results}
+                data={bigData}
                 keyExtractor={item => item.id}
                 renderItem={({item}) => 
                   <AvatarCard 

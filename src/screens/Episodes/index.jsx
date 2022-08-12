@@ -10,13 +10,9 @@ import { EpisodesCard } from '../../components/EpisodesCard';
 export function Episodes() {
   const [loading, setLoading] = useState(true);
   const [episodes, setEpisodes] = useState({});
-  const [charactersModal, setCharactersModal] = useState({});
   const B = (props) => <Text style={{fontWeight: 'bold'}}>{props.children}</Text>;
  
-
-
   function handleModalOpen(item){
-    setModalVisible(true);
     setCharactersModal(item);
   }
 

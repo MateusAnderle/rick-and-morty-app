@@ -8,7 +8,7 @@ import {
 export function LoadAnimation(){
   return (
     <Container>
-        <ActivityIndicator/>
+        <ActivityIndicator size="large" color="#000"/>
     </Container>
   );
 }
