@@ -17,7 +17,8 @@ export function Routes(){
                     height: 90,
                     borderTopColor: '#98FB98',
                     borderTopWidth: 3,
-                }
+                },
+                tabBarHideOnKeyboard: true
             }}
         >
             <Tab.Screen

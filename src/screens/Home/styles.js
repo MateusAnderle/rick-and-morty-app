@@ -9,10 +9,9 @@ export const Container = styled.View`
 `;
 
 export const BlackTable = styled.View`
-    flex: 1;
+    flex: 2;
     margin-top: 40px;
-    width: 93%;
-    flex-direction: row;
+    width: 90%;
     padding-bottom: 10px;
 `;
 
@@ -29,8 +28,9 @@ export const WhiteTable = styled.View`
 `;
 
 export const Header = styled.View`
-    flex: 5;
+    margin-top: 20px;
     justify-content: center;
+    margin-bottom: 15px;
 `;
 
 export const BigTitle = styled.Text`
@@ -43,12 +43,23 @@ export const SubTitle = styled.Text`
     color: #fff;
 `;
 
-export const IconButton = styled.TouchableOpacity``;
+export const IconButton = styled.TouchableOpacity`
+    margin-left: 10px;
+`;
 
 export const Search = styled.View`
-    flex: 1;
-    justify-content: center;
+
+    justify-content: flex-start;
     align-items: center;
+    flex-direction: row;
+`;
+
+export const TextInput = styled.TextInput`
+    height: 30px;
+    width: 220px;
+    background-color: #fff;
+    border-radius: 5px;
+    padding-left: 10px;
 `;
 
 

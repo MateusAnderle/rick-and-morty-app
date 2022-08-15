@@ -11,7 +11,7 @@ export const Container = styled.View`
 export const BlackTable = styled.View`
     flex: 1;
     margin-top: 40px;
-    width: 93%;
+    width: 90%;
     flex-direction: row;
     padding-bottom: 10px;
 `;
@@ -41,14 +41,6 @@ export const BigTitle = styled.Text`
 
 export const SubTitle = styled.Text`
     color: #fff;
-`;
-
-export const IconButton = styled.TouchableOpacity``;
-
-export const Search = styled.View`
-    flex: 1;
-    justify-content: center;
-    align-items: center;
 `;
 
 

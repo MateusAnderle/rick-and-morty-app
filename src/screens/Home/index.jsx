@@ -12,6 +12,7 @@ export function Home() {
   const [modalVisible, setModalVisible] = useState(false);
   const [charactersModal, setCharactersModal] = useState({});
   const [bigData, setBigData] = useState([]); 
+  const [textInputValue, setTextInputValue] = useState('');
   const B = (props) => <Text style={{fontWeight: 'bold'}}>{props.children}</Text>;
 
   function handleModalOpen(item){
@@ -19,15 +20,19 @@ export function Home() {
     setCharactersModal(item);
   }
 
+  function handleSearchCharacter(){
+    handleModalOpen(true);
+    let filtered = bigData.filter(function(obj) { return obj.id == textInputValue; });
+    setCharactersModal(filtered[0]);
+  }
+
   useEffect(()=>{
     async function fetchCharacter(){
       try {
-/////////////////////////////////////////////////////////////////////////// FAZER NAS OUTRAS PÁGINAS
         for (let i = 1; i <= 826; i++) {
           let responseNova = await api.get('/character/' + i);
           setBigData(arr => [...arr, responseNova.data]);
-       }
-/////////////////////////////////////////////////////////////////////////// FAZER NAS OUTRAS PÁGINAS
+        }
       } catch (error) {
         console.log(error);
       }finally{
@@ -36,7 +41,7 @@ export function Home() {
     }
     fetchCharacter();
   }, []);
-  
+
     return (
       <S.Container>
         <ImageBackground source={require('../../assets/splash.jpg')} style={styles.imageBackground}>
@@ -54,7 +59,15 @@ export function Home() {
               </S.Header>
 
               <S.Search>
-                <S.IconButton>
+                <S.TextInput
+                  value={Text}
+                  placeholder="Search by character ID"
+                  placeholderTextColor='#CCC'
+                  keyboardType="numeric"
+                  onChangeText={setTextInputValue}
+                />
+
+                <S.IconButton onPress={handleSearchCharacter}>
                   <Feather name="search" size={24} color="white" />
                 </S.IconButton>
               </S.Search>
@@ -62,8 +75,6 @@ export function Home() {
 
 
           <S.WhiteTable>
-
-
               <S.Modal
                 animationType="fade"
                 transparent={true}
@@ -108,7 +119,7 @@ export function Home() {
                 }
               />
           }
-
+         
           </S.WhiteTable>
         </ImageBackground>
       </S.Container>
