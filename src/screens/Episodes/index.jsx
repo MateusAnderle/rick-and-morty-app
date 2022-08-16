@@ -8,28 +8,29 @@ import { EpisodesCard } from '../../components/EpisodesCard';
 
 export function Episodes() {
   const [loading, setLoading] = useState(true);
+  const [listLoading, setListLoading] = useState(true);
   const [episodes, setEpisodes] = useState([]);
+  const [ page, setPage] = useState(1);
+  const [ totalPages, setTotalPages] = useState(0);
   const B = (props) => <Text style={{fontWeight: 'bold'}}>{props.children}</Text>;
- 
-  function handleModalOpen(item){
-    setCharactersModal(item);
+
+  async function fetchEpisodes(){ 
+    if (totalPages > 0 && page > totalPages) return (setListLoading(false));
+    try {
+      const response = await api.get(`/episode?page=${page}`);
+      const { results, info } = response.data;
+      setEpisodes(arr => [...arr, ...results]);
+      setTotalPages(info.pages)
+      setPage(page + 1);
+
+    } catch (error) {
+      console.log(error);
+    }finally{
+      setLoading(false);
+    }
   }
 
   useEffect(()=>{
-    async function fetchEpisodes(){ 
-      try {
-
-        for (let i = 1; i <= 51; i++) {
-          let responseNova = await api.get('/episode/' + i);
-          setEpisodes(arr => [...arr, responseNova.data]);
-        }
-
-      } catch (error) {
-        console.log(error);
-      }finally{
-        setLoading(false);
-      }
-    }
     fetchEpisodes();
   }, []);
   
@@ -55,10 +56,12 @@ export function Episodes() {
             { loading ? <LoadAnimation /> : 
               <S.EpisodesList 
                 data={episodes}
-                keyExtractor={item => item.name}
+                keyExtractor={item => String(item.id)}
+                onEndReached={fetchEpisodes}
+                onEndReachedThreshold={0.2}
+                ListFooterComponent={() => listLoading ? <S.LoadingView> <LoadAnimation /> </S.LoadingView> : <Text/>}
                 renderItem={({item}) => 
                   <EpisodesCard 
-                    onPress={() => handleModalOpen(item.characters)}
                     id={item.id} 
                     name={item.name} 
                     airDate={item.air_date} 

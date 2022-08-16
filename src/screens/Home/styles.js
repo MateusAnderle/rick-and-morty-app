@@ -108,3 +108,9 @@ export const Pressable = styled.TouchableOpacity`
 export const ButtonText = styled.Text`
     font-weight: bold;
 `;
+
+export const LoadingView = styled.Text`
+    margin-top: 10px;
+    text-align: center;
+    justify-content: center;
+`;

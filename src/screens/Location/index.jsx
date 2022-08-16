@@ -7,25 +7,31 @@ import { LocationCard } from '../../components/LocationCard';
 
 export function Location() {
   const [loading, setLoading] = useState(true);
+  const [listLoading, setListLoading] = useState(true);
   const [location, setLocation] = useState([]);
+  const [ page, setPage] = useState(1);
+  const [ totalPages, setTotalPages] = useState(0);
   const B = (props) => <Text style={{fontWeight: 'bold'}}>{props.children}</Text>;
 
-  useEffect(()=>{
-    async function fetchLocation(){ 
-      try {
 
-        for (let i = 1; i <= 126; i++) {
-          let responseNova = await api.get('/location/' + i);
-          setLocation(arr => [...arr, responseNova.data]);
-        }
+  async function fetchLocation(){ 
+    if (totalPages > 0 && page > totalPages) return (setListLoading(false));
+    try {
+      const response = await api.get(`/location?page=${page}`);
+      const { results, info } = response.data;
+      setLocation(arr => [...arr, ...results]);
+      setTotalPages(info.pages)
+      setPage(page + 1);
 
-
-      } catch (error) {
-        console.log(error);
-      }finally{
-        setLoading(false);
-      }
+    } catch (error) {
+      console.log(error);
+    }finally{
+      setLoading(false);
     }
+  }
+
+
+  useEffect(()=>{
     fetchLocation();
   }, []);
   
@@ -52,7 +58,10 @@ export function Location() {
             { loading ? <LoadAnimation /> : 
               <S.EpisodesList 
                 data={location}
-                keyExtractor={item => item.name}
+                keyExtractor={item => String(item.id)}
+                onEndReached={fetchLocation}
+                onEndReachedThreshold={0.2}
+                ListFooterComponent={() => listLoading ? <S.LoadingView> <LoadAnimation /> </S.LoadingView> : <Text/>}
                 renderItem={({item}) => 
                   <LocationCard 
                     id={item.id} 

@@ -1,18 +1,27 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import * as S from './styles';
 import { StatusBar, ImageBackground, StyleSheet, Alert, Text } from 'react-native';
 import { Feather } from '@expo/vector-icons'; 
 import { AvatarCard } from '../../components/AvatarCard';
 import { api } from '../../services/api';
 import { LoadAnimation } from '../../components/LoadAnimation';
+import * as SplashScreen from 'expo-splash-screen';
 
+SplashScreen.preventAutoHideAsync();
+setTimeout(openApp, 3000);
+function openApp(){
+  SplashScreen.hideAsync();
+}
 
 export function Home() {
   const [loading, setLoading] = useState(true);
+  const [listLoading, setListLoading] = useState(true);
   const [modalVisible, setModalVisible] = useState(false);
   const [charactersModal, setCharactersModal] = useState({});
   const [bigData, setBigData] = useState([]); 
   const [textInputValue, setTextInputValue] = useState('');
+  const [ page, setPage] = useState(1);
+  const [ totalPages, setTotalPages] = useState(0);
   const B = (props) => <Text style={{fontWeight: 'bold'}}>{props.children}</Text>;
 
   function handleModalOpen(item){
@@ -26,19 +35,23 @@ export function Home() {
     setCharactersModal(filtered[0]);
   }
 
-  useEffect(()=>{
-    async function fetchCharacter(){
-      try {
-        for (let i = 1; i <= 826; i++) {
-          let responseNova = await api.get('/character/' + i);
-          setBigData(arr => [...arr, responseNova.data]);
-        }
-      } catch (error) {
-        console.log(error);
-      }finally{
-        setLoading(false);
-      }
+  async function fetchCharacter(){
+    if (totalPages > 0 && page > totalPages) return (setListLoading(false));
+    try {
+      const response = await api.get(`/character/?page=${page}`);
+      const { results, info } = response.data;
+      setBigData(arr => [...arr, ...results]);
+      setTotalPages(info.pages)
+      setPage(page + 1);
+
+    } catch (error) {
+      console.log(error);
+    }finally{
+      setLoading(false);
     }
+  }
+
+  useEffect(()=>{
     fetchCharacter();
   }, []);
 
@@ -107,7 +120,10 @@ export function Home() {
           { loading ? <LoadAnimation /> : 
               <S.CharacterList 
                 data={bigData}
-                keyExtractor={item => item.id}
+                keyExtractor={item => String(item.id)}
+                onEndReached={fetchCharacter}
+                onEndReachedThreshold={0.2}
+                ListFooterComponent={() => listLoading ? <S.LoadingView> <LoadAnimation /> </S.LoadingView> : <Text/>}
                 renderItem={({item}) => 
                   <AvatarCard 
                     onPress={() => handleModalOpen(item)}

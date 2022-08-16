@@ -49,3 +49,9 @@ export const EpisodesList = styled(FlatList).attrs({
 })`
     width: 100%;
 `;
+
+export const LoadingView = styled.Text`
+    margin-top: 10px;
+    text-align: center;
+    justify-content: center;
+`;
